@@ -9,8 +9,9 @@
 :root {
   --colors-light: 254, 254, 254; /* #fefefe*/
   --colors-dark: 17,17,17; /* #111111*/
-  --colors-primary: 250, 77, 173; /* #fa4dad */
-  --colors-active1: 240, 129, 55; /* #f08137 */
+  --colors-primary: 85,125, 172; /*#557DAC */
+  --colors-secondary: 227,99,150; /*#E36396 */
+  --colors-active1: 240, 129, 55; /*#f08137 */
   --colors-positive: 26, 219, 116; /* #1adb74 */
   --colors-negative: 207, 62, 90 /* #cf3e5a */
   --colors-active: 0, 255, 170; /* #00ffaa */
@@ -19,8 +20,9 @@
 .dark {
     --colors-light: 17,17,17; /* #111111*/
     --colors-dark: 254, 254, 254; /* #fefefe*/
-    --colors-primary: 240, 55, 158; /* #f0379e */
-    --colors-active1: 240, 129, 55; /* #f08137 */
+    --colors-primary: 85,125, 172; /* #557DAC */
+    --colors-secondary: 227,99,150; /*#E36396 */
+    --colors-active1: 240, 129, 55; /*#f08137 */
     --colors-positive:  26, 219, 116; /* #1adb74 */
     --colors-negative: 207, 62, 90 /* #cf3e5a */
     --colors-active: 255, 255, 255; /* #ffffff */

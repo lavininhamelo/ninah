@@ -4,6 +4,9 @@ const path = require("path");
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  images: {
+    domains: ["images.unsplash.com", "avatars.githubusercontent.com"],
+  },
 };
 
 // The folders containing files importing twin.macro
