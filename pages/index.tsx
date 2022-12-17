@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { useState } from "react";
-import tw, { styled } from "twin.macro";
+import  {useTheme}  from "@/hooks/useTheme";
+import tw, { styled, theme } from "twin.macro";
 
 const Title = tw.h1`text-xl font-bold text-blue-500 mb-4`;
 const Button = styled.button<{ isCold: boolean }>((props) => [
@@ -9,21 +9,8 @@ const Button = styled.button<{ isCold: boolean }>((props) => [
 ]);
 
 export default function Home(params: any) {
-  const [isCold, setCold] = useState(false);
+  const {toggleTheme, theme} = useTheme();
   
-  // TODO - Move to a custom hook useTheme
-  const toggleTheme = () => {
-    if (localStorage.getItem("theme") === "light") {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setCold(true);
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setCold(false);
-    }
-  };
-
   return (
     <section className="w-full h-full bg-light p-4 flex flex-col items-center justify-center">
       <Head>
@@ -33,7 +20,7 @@ export default function Home(params: any) {
       </Head>
 
       <Title>Hello DevPad World!</Title>
-      <Button isCold={isCold} onClick={() => toggleTheme()}>
+      <Button isCold={theme === 'dark'} onClick={() => toggleTheme()}>
         Change Theme
       </Button>
     </section>
