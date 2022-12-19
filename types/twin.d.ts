@@ -24,3 +24,11 @@ declare global {
     }
   }
 }
+
+// TODO: Move to separate file
+declare module "next-auth" {
+  interface Session {
+    accessToken: string;
+  }
+}
+
