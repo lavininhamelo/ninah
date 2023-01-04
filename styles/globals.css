@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,24 +9,31 @@
 
 :root {
   --colors-light: 254, 254, 254; /* #fefefe*/
-  --colors-dark: 17,17,17; /* #111111*/
-  --colors-primary: 85,125, 172; /*#557DAC */
-  --colors-secondary: 227,99,150; /*#E36396 */
+  --colors-dark: 5,2,4; /* #111111*/
+  --colors-dark1: 23,22,25; /* #171619*/
+  --colors-light1: 254, 254, 254; /* #fefefe*/
+  --colors-primary: 252, 55, 114; /* #FC3772 */
+  --colors-secondary: 95, 24, 62; /* #5f1834 */
   --colors-active1: 240, 129, 55; /*#f08137 */
   --colors-positive: 26, 219, 116; /* #1adb74 */
-  --colors-negative: 207, 62, 90 /* #cf3e5a */
+  --colors-negative: 207, 62, 90; /* #cf3e5a */
   --colors-active: 0, 255, 170; /* #00ffaa */
+  --colors-text-base: 95, 24, 62; /* #5f1834 */
 }
 
 .dark {
-    --colors-light: 17,17,17; /* #111111*/
+    --colors-light: 5,2,4; /* #111111*/
     --colors-dark: 254, 254, 254; /* #fefefe*/
-    --colors-primary: 85,125, 172; /* #557DAC */
-    --colors-secondary: 227,99,150; /*#E36396 */
+    --colors-dark1: 254, 254, 254; /* #fefefe*/
+    --colors-light1: 23,22,25; /* #171619*/
+    --colors-primary: 252, 55, 114; /* #FC3772 */
+    --colors-secondary: 95, 24, 62; /* #5f1834 */
     --colors-active1: 240, 129, 55; /*#f08137 */
     --colors-positive:  26, 219, 116; /* #1adb74 */
-    --colors-negative: 207, 62, 90 /* #cf3e5a */
+    --colors-negative: 207, 62, 90; /* #cf3e5a */
     --colors-active: 255, 255, 255; /* #ffffff */
+    --colors-text-base:255, 255, 255; /* #ffffff */
+
  }
 
 
@@ -40,7 +48,7 @@ body {
   width: 100%;
   height: 100vh;
   background-color: rgb(var(--colors-light));
-  color: rgb(var(--colors-dark));
+  color: rgb(var(--colors-text-base));
 }
 
 #__next {

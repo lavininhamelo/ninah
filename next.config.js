@@ -3,9 +3,11 @@ const path = require("path");
 
 const nextConfig = {
   reactStrictMode: true,
+  distDir: "build",
   swcMinify: true,
   images: {
     domains: ["images.unsplash.com", "avatars.githubusercontent.com"],
+    unoptimized: true,
   },
 };
 
