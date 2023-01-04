@@ -4,7 +4,7 @@ import Image from "next/image";
 import useTheme from "@/hooks/useTheme";
 
 export default function Home() {
-  const {isDark} = useTheme();
+  const { isDark } = useTheme();
   const colofourBackground = `
 rgb(var(--colors-light)); 
 background-size: 100% 1200px;
@@ -25,8 +25,6 @@ radial-gradient(at 40% 14%, hsla(11,87%,64%,0.53) 0px, transparent 80%),
 radial-gradient(at 10% 14%, hsla(49,89%,66%,0.62) 0px, transparent 80%), 
 radial-gradient(at 93% 3%, hsla(225,100%,73%,0.59) 0px, transparent 80%), 
 radial-gradient(at 70% 40%, hsla(189,73%,62%,1) 0px, transparent 80%);`;
-
-
 
   enum techss {
     GraphQl,
@@ -76,36 +74,42 @@ radial-gradient(at 70% 40%, hsla(189,73%,62%,1) 0px, transparent 80%);`;
 
   const posts = [
     {
+      image: "https://picsum.photos/500/300?7",
       title: "How to create a custom hook",
       description: "In this post I will show you how to create a custom hook",
       date: "November 29, 2022",
       tags: ["react", "hooks"],
     },
     {
+      image: "https://picsum.photos/500/300?6",
       title: "How to create a custom hook",
       description: "In this post I will show you how to create a custom hook",
       date: "November 29, 2022",
       tags: ["react", "hooks"],
     },
     {
+      image: "https://picsum.photos/500/300?5",
       title: "How to create a custom hook",
       description: "In this post I will show you how to create a custom hook",
       date: "November 29, 2022",
       tags: ["react", "hooks"],
     },
     {
+      image: "https://picsum.photos/500/300?4",
       title: "How to create a custom hook",
       description: "In this post I will show you how to create a custom hook",
       date: "November 29, 2022",
       tags: ["react", "hooks"],
     },
     {
+      image: "https://picsum.photos/500/300?3",
       title: "How to create a custom hook",
       description: "In this post I will show you how to create a custom hook",
       date: "November 29, 2022",
       tags: ["react", "hooks"],
     },
     {
+      image: "https://picsum.photos/500/300?2",
       title: "How to create a custom hook",
       description: "In this post I will show you how to create a custom hook",
       date: "November 29, 2022",
@@ -137,7 +141,12 @@ radial-gradient(at 70% 40%, hsla(189,73%,62%,1) 0px, transparent 80%);`;
                 flex items-center px-4 border border-solid border-gray-200  
                 h-12 rounded w-full"
               >
-                <Image src={"/icons/" + tech.icon + ".png"} width={30} height={30} alt={tech.name} />
+                <Image
+                  src={"/icons/" + tech.icon + ".png"}
+                  width={30}
+                  height={30}
+                  alt={tech.name}
+                />
                 <p className="ml-2">{tech.name}</p>
               </div>
             ))}
@@ -160,10 +169,20 @@ radial-gradient(at 70% 40%, hsla(189,73%,62%,1) 0px, transparent 80%);`;
                 hover:shadow-lg
                 flex flex-col 
                 border border-b-0 border-solid border-gray-200   
-                h-48 pt-6 rounded w-full
+                rounded w-full
+                pt-6 
                 [&:nth-child(5)]:hidden [&:nth-child(6)]:hidden lg:[&:nth-child(5)]:flex lg:[&:nth-child(6)]:flex
                 "
               >
+                <div className="ml-2 px-6 mb-2">
+                  <Image
+                    alt="Background"
+                    width="0"
+                    height="0"
+                    style={{ width: "100%", height: "100%" }}
+                    src={post.image}
+                  />
+                </div>
                 <p className="font-bold text-lg ml-2 px-6">{post.title}</p>
                 <p className="ml-2 mt-2 uppercase px-6">
                   {post.tags.map((tag) => (
@@ -172,9 +191,14 @@ radial-gradient(at 70% 40%, hsla(189,73%,62%,1) 0px, transparent 80%);`;
                     </span>
                   ))}
                 </p>
-                <p className="ml-2 px-6 text-gray-500 mt-auto font-light text-base">{post.date}</p>
+                <p className="ml-2 px-6 text-gray-500 mt-auto font-light text-base">
+                  {post.date}
+                </p>
                 <div
-                  className={"bg-red-500 h-[5px] mt-auto rounded rounded-t-none bg-gradient-to-r " + gradients[index]}
+                  className={
+                    "bg-red-500 h-[5px]  rounded rounded-t-none mt-4 bg-gradient-to-r " +
+                    gradients[index]
+                  }
                 ></div>
               </div>
             ))}
@@ -191,14 +215,18 @@ radial-gradient(at 70% 40%, hsla(189,73%,62%,1) 0px, transparent 80%);`;
             flex flex-col items-center justify-center rounded h-64 my-16 w-full"
           >
             <p className="uppercase mb-4">follow the blog </p>
-            <p className="font-bold text-2xl mb-6">Subscribe in my newsletter</p>
+            <p className="font-bold text-2xl mb-6">
+              Subscribe in my newsletter
+            </p>
             <div className="input flex w-96 bg-white h-12 rounded-lg border border-solid  border-gray-300">
               <input
                 type="text"
                 placeholder="Your e-mail address..."
                 className="w-full h-full rounded-lg font-light text-sm mx-4 outline-none"
               />
-              <button className="bg-primary text-sm text-white h-full  rounded-lg px-4">Subscribe</button>
+              <button className="bg-primary text-sm text-white h-full  rounded-lg px-4">
+                Subscribe
+              </button>
             </div>
           </div>
         </div>
