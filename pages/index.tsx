@@ -1,10 +1,24 @@
 import Head from "next/head";
-import { Header } from "@/components/layout/Header/Header";
-import { Newsletter } from "@/components/blog/Newsletter/Newsletter";
+import HomeLayout from "layout/HomeLayout";
 import { Tech } from "@/components/blog/Tech/Tech";
 import { PostCard } from "@/components/blog/Post/PostCard";
+import { PostCardExpanded } from "@/components/blog/Post/PostCardExpanded";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+ interface Post {
+   title: string;
+   description: string;
+   date: string;
+   tags: string[];
+   slug: string;
+   language: string;
+ }
+
+
 
 export default function Home() {
+  const [posts, setPosts] = useState<Post[]>([]);
   const techs = [
     {
       name: "React",
@@ -39,50 +53,26 @@ export default function Home() {
     "from-purple-400 to-pink-500",
   ];
 
-  const posts = [
-    {
-      title: "How to create a custom hook",
-      description: "In this post I will show you how to create a custom hook",
-      date: "November 29, 2022",
-      tags: ["react", "hooks"],
-      slug: "slug",
-    },
-    {
-      title: "How to create a custom hook",
-      description: "In this post I will show you how to create a custom hook",
-      date: "November 29, 2022",
-      tags: ["react", "hooks"],
-      slug: "slug",
-    },
-    {
-      title: "How to create a custom hook",
-      description: "In this post I will show you how to create a custom hook",
-      date: "November 29, 2022",
-      tags: ["react", "hooks"],
-      slug: "slug",
-    },
-    {
-      title: "How to create a custom hook",
-      description: "In this post I will show you how to create a custom hook",
-      date: "November 29, 2022",
-      tags: ["react", "hooks"],
-      slug: "slug",
-    },
-    {
-      title: "How to create a custom hook",
-      description: "In this post I will show you how to create a custom hook",
-      date: "November 29, 2022",
-      tags: ["react", "hooks"],
-      slug: "slug",
-    },
-    {
-      title: "How to create a custom hook",
-      description: "In this post I will show you how to create a custom hook",
-      date: "November 29, 2022",
-      tags: ["react", "hooks"],
-      slug: "slug",
-    },
-  ];
+  useEffect(() => {
+     async function getPosts() {
+       fetch("/api/devto/posts")
+         .then((res) => res.json())
+         .then((data) => {
+           const devPosts = data.map((post:any) => {
+              return {
+                title: post.title,
+                description: post.description,
+                date: post.readable_publish_date,
+                tags: post.tag_list,
+                slug: post.slug,
+                language: 'pt-Br'
+              };
+           })
+           setPosts(devPosts.slice(0, 6));
+         });
+     }
+    getPosts();
+  }, []);
 
   return (
     <section className="w-full h-full">
@@ -91,8 +81,7 @@ export default function Home() {
         <title>Ninah&apos;s Blog</title>
         <meta name="description" content="Ninah's Blog" />
       </Head>
-      <div className="w-full flex flex-col items-center h-full">
-        <Header />
+      <HomeLayout>
         <div className="w-full max-w-[1200px] px-8 mb-8 xl:px-0 hidden sm:block">
           <h2 className="text-2xl font-semibold mb-8">By Tech</h2>
           <div className="techs  gap-2 flex-wrap grid grid-cols-4 lg:grid-cols-5">
@@ -101,19 +90,23 @@ export default function Home() {
             ))}
           </div>
         </div>
+
         <div className="w-full max-w-[1200px] px-8 xl:px-0">
           <div className="flex justify-between md:my-8 items-center">
             <h2 className="text-2xl font-semibold">Latest Posts</h2>
             <h2 className="mb-8">View All</h2>
           </div>
-          <div className="posts gap-4 flex-wrap grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post, index) => (
-            <PostCard gradient={gradients[index]} key={index} {...post} link={post.slug} linkColor="#ff00ff" />
+
+          {/**  <div className="w-full mb-8 h-8 bg-red-500 sm:bg-orange-500 md:bg-yellow-500 lg:bg-green-500 xl:bg-blue-500"></div> */}
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-full gap-y-8 md:gap-4 mb-16">
+            {posts.length > 0 && <PostCardExpanded gradient={gradients[5]} {...posts[0]} link={posts[0].slug} />}
+            {posts.slice(1, 5).map((post, index) => (
+              <PostCard gradient={gradients[index]} key={index} {...post} link={post.slug} />
             ))}
           </div>
-          <Newsletter />
         </div>
-      </div>
+      </HomeLayout>
     </section>
   );
 }

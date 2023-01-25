@@ -12,7 +12,7 @@ export const Tech: React.FC<TechProps> = ({ icon, name, ...props }) => {
   return (
     <Container {...props}>
       <Image src={iconSrc} width={30} height={30} alt={name} />
-      <p className="ml-2">{name}</p>
+      <p className="ml-2 leading-4">{name}</p>
     </Container>
   );
 };

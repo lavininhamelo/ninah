@@ -1,17 +1,16 @@
-import React from 'react';
+import React from "react";
 
 // import { Container } from './styles';
 
-interface PostCardProps { 
-    title: string;
-    tags: string[];
-    date: string;
-    gradient: string;
-    link: string;
-    linkColor: string;
+interface PostCardProps {
+  title: string;
+  tags: string[];
+  date: string;
+  gradient: string;
+  link: string;
 }
 
-export const PostCard: React.FC<PostCardProps> = ({title, tags, date, gradient, ...props}) => {
+export const PostCard: React.FC<PostCardProps> = ({ title, tags, date, gradient, ...props }) => {
   return (
     <div
       {...props}
@@ -24,14 +23,18 @@ export const PostCard: React.FC<PostCardProps> = ({title, tags, date, gradient, 
                 box-border
                 flex flex-col 
                 border border-b-0 border-solid border-gray-200   
-                 pt-6 rounded w-full
-                [&:nth-child(5)]:hidden [&:nth-child(6)]:hidden lg:[&:nth-child(5)]:flex lg:[&:nth-child(6)]:flex
+                 rounded 
+                 w-full
+                col-span-1
+                
                 "
     >
       <div
-        className={'w-auto border-gray-200 h-80 mx-6 mb-6 rounded border border-solid bg-gradient-to-tr bg-opacity-50 '+ gradient}
-      >
-      </div>
+        className={
+          "hidden lg:block w-auto border-gray-200 min-h-[200px]  mb-6 rounded border border-solid bg-gradient-to-tr bg-opacity-50 " +
+          gradient
+        }
+      ></div>
       <p className="font-bold text-lg ml-2 px-6">{title}</p>
       <p className="ml-2 mt-2 uppercase px-6">
         {tags.map((tag) => (
@@ -44,5 +47,4 @@ export const PostCard: React.FC<PostCardProps> = ({title, tags, date, gradient, 
       <div className={"bg-red-500 h-[5px] mt-auto rounded rounded-t-none bg-gradient-to-r " + gradient}></div>
     </div>
   );
-}
-
+};

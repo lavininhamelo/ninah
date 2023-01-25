@@ -2,7 +2,7 @@ import tw, {styled} from 'twin.macro';
 
 
 export const Container = styled.header<{ isDark: boolean }>((props) => ({
-  ...tw` w-full h-[500px] p-6 flex flex-col py-8 items-center text-secondary dark:text-white`,
+  ...tw` w-full h-[500px] flex flex-col items-center text-secondary dark:text-white`,
   backgroundColor: props.isDark ? colofourBackground : colofourBackgroundLight,
 }));
 

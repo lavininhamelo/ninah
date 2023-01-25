@@ -14,12 +14,16 @@ export const Newsletter: React.FC = () => {
   return (
     <div
       style={{ backgroundColor: colofourBackground }}
-      className="dark:border-[rgba(255,255,255,.05)] border border-solid border-gray-200 flex flex-col items-center justify-center rounded h-64 my-16 w-full"
+      className="dark:border-[rgba(255,255,255,.1)] border border-gray-200 flex flex-col items-center justify-center rounded h-80 max-w-[1200px] w-full pb-8"
     >
-      <p className="uppercase mb-4">Follow the blog </p>
-      <p className="font-bold text-2xl mb-6">Subscribe in my newsletter</p>
+      <p className="uppercase">Follow the blog </p>
+      <p className="font-bold text-2xl mb-4">Subscribe in my newsletter</p>
       <div className="input flex w-96 bg-white h-12 rounded-lg border border-solid border-gray-300">
-        <input type="text" placeholder="Your e-mail address..." className="w-full h-full rounded-lg font-light text-sm mx-4 outline-none" />
+        <input
+          type="text"
+          placeholder="Your e-mail address..."
+          className="w-full h-full rounded-lg font-light text-sm mx-4 outline-none"
+        />
         <button className="bg-primary text-sm text-white h-full  rounded-lg px-4">Subscribe</button>
       </div>
     </div>
