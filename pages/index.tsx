@@ -83,27 +83,27 @@ export default function Home() {
       </Head>
       <HomeLayout>
         <div className="w-full max-w-[1200px] px-8 mb-8 xl:px-0 hidden sm:block">
-          <h2 className="text-2xl font-semibold mb-8">By Tech</h2>
-          <div className="techs  gap-2 flex-wrap grid grid-cols-4 lg:grid-cols-5">
+          <div className="techs  gap-4 flex-wrap grid grid-cols-4 lg:grid-cols-5">
             {techs.map((tech, index) => (
               <Tech key={index} {...tech} />
             ))}
           </div>
         </div>
 
-        <div className="w-full max-w-[1200px] px-8 xl:px-0">
-          <div className="flex justify-between md:my-8 items-center">
-            <h2 className="text-2xl font-semibold">Latest Posts</h2>
-            <h2 className="mb-8">View All</h2>
-          </div>
-
-          {/**  <div className="w-full mb-8 h-8 bg-red-500 sm:bg-orange-500 md:bg-yellow-500 lg:bg-green-500 xl:bg-blue-500"></div> */}
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-full gap-y-8 md:gap-4 mb-16">
-            {posts.length > 0 && <PostCardExpanded gradient={gradients[5]} {...posts[0]} link={posts[0].slug} />}
-            {posts.slice(1, 5).map((post, index) => (
-              <PostCard gradient={gradients[index]} key={index} {...post} link={post.slug} />
-            ))}
+        <div className="flex flex-col items-start w-full max-w-[1200px] px-8 xl:px-0 mt-16">
+          <div className="flex w-full justify-between gap-x-4">
+            <div className="w-full lg:w-7/12">
+              <h2 className="text-2xl font-semibold mb-12">Latest Posts</h2>
+              <div className="flex flex-col gap-y-6 mb-16">
+                {/* {posts.length > 0 && <PostCardExpanded gradient={gradients[5]} {...posts[0]} link={posts[0].slug} />} */}
+                {posts.slice(0, 5).map((post, index) => (
+                  <PostCard gradient={gradients[index]} key={index} {...post} link={post.slug} />
+                ))}
+              </div>
+            </div>
+            <div className="w-4/12 rounded">
+              <h2 className="text-left font-semibold text-2xl mb-12">Popular Posts</h2>
+            </div>
           </div>
         </div>
       </HomeLayout>
