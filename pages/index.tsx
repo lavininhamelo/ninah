@@ -97,12 +97,15 @@ export default function Home() {
             <h2 className="mb-8">View All</h2>
           </div>
 
-          {/**  <div className="w-full mb-8 h-8 bg-red-500 sm:bg-orange-500 md:bg-yellow-500 lg:bg-green-500 xl:bg-blue-500"></div> */}
+          {/**  <div className="w-full mb-8 h-8 bg-red-500 sm:bg-orange-500 md:bg-yellow-500 lg:bg-green-500 xl:bg-blue-500"></div> 
+            {posts.length > 0 && <PostCardExpanded gradient={gradients[5]} {...posts[0]} link={posts[0].slug} />}
+           *  
+           * 
+          */}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-full gap-y-8 md:gap-4 mb-16">
-            {posts.length > 0 && <PostCardExpanded gradient={gradients[5]} {...posts[0]} link={posts[0].slug} />}
-            {posts.slice(1, 5).map((post, index) => (
-              <PostCard gradient={gradients[index]} key={index} {...post} link={post.slug} />
+            {posts.slice(0, 6).map((post, index) => (
+              <PostCard gradient={gradients[index]} index={index} {...post} link={post.slug} />
             ))}
           </div>
         </div>

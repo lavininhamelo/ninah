@@ -6,11 +6,12 @@ interface PostCardProps {
   title: string;
   tags: string[];
   date: string;
+  index: number;
   gradient: string;
   link: string;
 }
 
-export const PostCard: React.FC<PostCardProps> = ({ title, tags, date, gradient, ...props }) => {
+export const PostCard: React.FC<PostCardProps> = ({ title, tags, date, gradient, index, ...props }) => {
   return (
     <div
       {...props}
@@ -29,20 +30,18 @@ export const PostCard: React.FC<PostCardProps> = ({ title, tags, date, gradient,
                 
                 "
     >
+      
+
       <div
         className={
           "hidden lg:block w-auto border-gray-200 min-h-[200px]  mb-6 rounded border border-solid bg-gradient-to-tr bg-opacity-50 " +
           gradient
         }
-      ></div>
+      >
+
+      <img src={"/images/covers/cover"+(index)+".jpeg"} alt="Your Name" />
+      </div>
       <p className="font-bold text-lg ml-2 px-6">{title}</p>
-      <p className="ml-2 mt-2 uppercase px-6">
-        {tags.map((tag) => (
-          <span className="mr-2 text-primary" key={tag}>
-            #{tag}
-          </span>
-        ))}
-      </p>
       <p className="ml-2 px-6 text-gray-500 font-light text-base my-6">{date}</p>
       <div className={"bg-red-500 h-[5px] mt-auto rounded rounded-t-none bg-gradient-to-r " + gradient}></div>
     </div>

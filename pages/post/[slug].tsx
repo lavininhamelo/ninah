@@ -42,6 +42,7 @@ export const getStaticProps: GetStaticProps<any, { slug: string }> = async ({ pa
   console.log(slug);
 
   const article = await fetch(`https://dev.to/api/articles/nataliedeweerd/${slug}`).then((res) => res.json());
+  console.log(article);
 
   return {
     props: {
