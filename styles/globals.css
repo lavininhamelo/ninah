@@ -2,44 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
+
 /* 
    Theme
 */
 
 :root {
-  --colors-light: 254, 254, 254; /* #fefefe*/
-  --colors-dark: 5, 2, 4; /* #111111*/
-  --colors-dark1: 23, 22, 25; /* #171619*/
-  --colors-light1: 254, 254, 254; /* #fefefe*/
-  --colors-primary: 252, 55, 114; /* #FC3772 */
-  --colors-secondary: 95, 24, 62; /* #5f1834 */
-  --colors-active1: 240, 129, 55; /*#f08137 */
+  --colors-light: 254, 254, 254; /** #fefefe */
+  --colors-dark: 5, 2, 4; /* #050204 */
+  --colors-dark1: 23, 22, 25; /* #171619 */
+  --colors-light1: 254, 254, 254; /* #fefefe */
+  --colors-primary: 252, 55, 114; /* #fc3772 */
+  --colors-secondary: 95, 24, 62; /* #5f183e */
+  --colors-active1: 157, 99, 248; /* #9d63f8 */
   --colors-positive: 26, 219, 116; /* #1adb74 */
   --colors-negative: 207, 62, 90; /* #cf3e5a */
   --colors-active: 0, 255, 170; /* #00ffaa */
-  --colors-text-base: 95, 24, 62; /* #5f1834 */
+  --colors-text-base: 95, 24, 62; /* #5f183e */
 }
 
 .dark {
-  --colors-light: 5, 2, 4; /* #111111*/
-  --colors-dark: 254, 254, 254; /* #fefefe*/
-  --colors-dark1: 254, 254, 254; /* #fefefe*/
-  --colors-light1: 23, 22, 25; /* #171619*/
-  --colors-primary: 252, 55, 114; /* #FC3772 */
-  --colors-secondary: 95, 24, 62; /* #5f1834 */
-  --colors-active1: 240, 129, 55; /*#f08137 */
+  --colors-light: 26, 22, 26; /* #050204 */
+  --colors-dark: 254, 254, 254; /* #fefefe */
+  --colors-dark1: 254, 254, 254; /* #fefefe */
+  --colors-light1: 34, 31, 42; /* #171619 */
+  --colors-primary: 252, 55, 114; /* #fc3772 */
+  --colors-secondary: 95, 24, 62; /* #5f183e */
+  --colors-active1: 157, 99, 248; /* #9d63f8 */
   --colors-positive: 26, 219, 116; /* #1adb74 */
   --colors-negative: 207, 62, 90; /* #cf3e5a */
   --colors-active: 255, 255, 255; /* #ffffff */
   --colors-text-base: 255, 255, 255; /* #ffffff */
+
 }
 
-* {
-  padding: 0;
-  margin: 0;
-  font-family: Poppins, Roboto, sans-serif;
-  box-sizing: border-box;
-}
 
 body {
   width: 100%;
@@ -77,21 +74,25 @@ p {
   border-weight: none;
   underline: none;
   line-style: none;
-  line-height: 2.5rem;
 }
 
-.highlight {
-  background: #000;
-  color: white;
-  padding: 16px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, .5);
-}
-
-.highlight .css {
-  border: none;
-}
-
-.highlight__panel-action {
+.highlight__panel {
   display: none;
+}
+
+pre code .token {
+  font-family: 'Fira Code', monospace !important;
+}
+
+pre[class*="language-"].line-numbers {
+  position: relative;
+  padding-left: 3.4em;
+  counter-reset: linenumber;
+  font-family: 'Fira Code', monospace !important;
+}
+
+.line-numbers-rows > span::before {
+  font-family: 'Fira Code', monospace !important;
+  color: rgba(255,255,255,0.6) !important;
+
 }
