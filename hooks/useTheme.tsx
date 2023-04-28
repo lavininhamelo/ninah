@@ -18,21 +18,26 @@ const ThemeProvider: React.FC<ProviderProps<string>> = ({ children }) => {
   const isDark = theme === "dark";
 
   useEffect(() => {
-    if (
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches &&
-      localStorage.getItem("theme") !== "light"
+    const storedTheme = localStorage.getItem("theme");
+    
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+      document.documentElement.classList.add(storedTheme);
+    } else if (
+      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
     ) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
       setTheme("dark");
+      document.documentElement.classList.add("dark");
     } else {
-      localStorage.setItem("theme", "light");
+      setTheme("light");
     }
+
   }, []);
 
   const toggleTheme = () => {
-    if (localStorage.getItem("theme") === "light") {
+    const storedTheme = localStorage.getItem("theme");
+
+    if (!storedTheme || storedTheme === "light") {
       document.documentElement.classList.add("dark");
       localStorage.setItem("theme", "dark");
       setTheme("dark");

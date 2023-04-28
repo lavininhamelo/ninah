@@ -1,15 +1,14 @@
-
 import React from "react";
 
-import {Avatar} from "@/components/general/Avatar/Avatar";
 import { useTheme } from "@/hooks/useTheme";
+import { Avatar } from "@/components/general/Avatar/Avatar";
 import { Navbar } from "../Navbar/Navbar";
 
-
 import { Container, Span, Intro, MyDescription, AboutMeButton, Hello, Me } from "./styles";
+import Link from "next/link";
 
 const Header: React.FC = () => {
-  const { isDark} = useTheme();
+  const { isDark } = useTheme();
 
   return (
     <Container isDark={isDark}>
@@ -24,7 +23,9 @@ const Header: React.FC = () => {
             content.
           </MyDescription>
           <AboutMeButton>
-            <span>See about me</span> <Span>&gt;&gt;</Span>
+            <Link href="/about-me">
+              <span>See about me</span> <Span>&gt;&gt;</Span>
+            </Link>
           </AboutMeButton>
         </Me>
         <Avatar className="hidden md:block" isDark={isDark} />

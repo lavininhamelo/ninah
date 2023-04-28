@@ -1,20 +1,5 @@
 import tw, {styled} from 'twin.macro';
 
-
-export const Container = styled.header<{ isDark: boolean }>((props) => ({
-  ...tw` w-full h-[500px] flex flex-col items-center text-secondary dark:text-white`,
-  backgroundColor: props.isDark ? colofourBackground : colofourBackgroundLight,
-}));
-
-export const Span = styled.span(() => tw`text-primary dark:text-primary font-bold`);
-export const Intro = styled.section(() => tw`text-center md:text-left flex items-center w-full max-w-[1200px] mt-20 px-2 sm:px-4 md:px-8 xl:px-0`);
-export const Me = styled.main(() => tw`flex-1 md:min-w-[320px]`);
-export const Hello = styled.h2(() => tw`text-4xl font-bold`);
-export const MyDescription = styled.h2(() => tw`md:max-w-[500px] text-lg my-6`);
-export const AboutMeButton = styled.button(() => tw`text-lg font-bold`);
-
-
-
 // Custom Gradient
 export const colofourBackgroundLight = `
 hsla(189,0%,100%,1); 
@@ -41,3 +26,11 @@ radial-gradient(at 50% 35%, hsla(189,73%,62%, 0.05) 0px, transparent 40%),
 radial-gradient(at 80% 20%, hsla(225,100%,68%,0.15) 0px, transparent 45%),
 radial-gradient(at 40% 55%, hsla(0,100%,81%,0.05) 0px, transparent 20%),
 radial-gradient(at 60% 55%, hsla(0,100%,81%,0.05) 0px, transparent 20%);`;
+
+
+export const Container = styled.header<{ isDark: boolean }>((props) => ({
+  ...tw`absolute w-full min-h-[600px] flex flex-col items-center text-secondary dark:text-white`,
+  backgroundColor: props.isDark ? colofourBackground : colofourBackgroundLight,
+  zIndex: 0,
+}));
+

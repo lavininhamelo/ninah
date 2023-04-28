@@ -1,3 +1,4 @@
+import Card from "@/components/ui/Card/Card";
 import Image from "next/image";
 import React from "react";
 import tw, { styled } from "twin.macro";
@@ -7,19 +8,19 @@ export interface TechProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
 }
 
+const Container = styled.div(() => tw`text-sm flex items-center h-6 w-full`);
+const Text = styled.p(() => tw`ml-2 leading-4 text-sm`);
+
 export const Tech: React.FC<TechProps> = ({ icon, name, ...props }) => {
   const iconSrc = `/icons/${icon}.png`;
   return (
-    <Container {...props}>
-      <Image src={iconSrc} width={30} height={30} alt={name} />
-      <p className="ml-2 leading-4">{name}</p>
-    </Container>
+    <Card padding="sm">
+      <Container {...props}>
+        <Image src={iconSrc} width={24} height={24} alt={name} />
+        <Text>{name}</Text>
+      </Container>
+    </Card>
   );
 };
 
-const Container = styled.div(() => tw`
-    dark:border-[rgba(255,255,255,.05)]
-    dark:bg-[rgba(180,150,255,0.05)]
-    hover:dark:bg-[rgba(180,150,255,.08)]
-    hover:shadow-lg
-    text-sm flex items-center px-4 border border-solid border-gray-200  h-12 rounded w-full`)
+

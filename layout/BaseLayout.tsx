@@ -1,15 +1,21 @@
 import { Newsletter } from "@/components/blog/Newsletter/Newsletter";
+import Footer from "@/components/layout/Footer/Footer";
 import { Navbar } from "@/components/layout/Navbar/Navbar";
 import React from "react";
+import { Container } from "./styles";
+import useTheme from "@/hooks/useTheme";
 
-const StartLayout: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children }) => {
+const BaseLayout: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children }) => {
+  const { isDark } = useTheme();
   return (
     <div className="w-full flex flex-col items-center h-full">
+      <Container isDark={isDark} />
       <Navbar />
-      <div className="w-full">{children}</div>
+      <div className="w-full max-w-[1200px] z-10 flex-1 px-2 sm:px-4 md:px-8 xl:px-0">{children}</div>
       <Newsletter />
+      <Footer />
     </div>
   );
 };
 
-export default StartLayout;
+export default BaseLayout;
