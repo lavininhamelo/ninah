@@ -16,14 +16,15 @@ const includedDirs = [
   path.resolve(__dirname, "components"),
   path.resolve(__dirname, "pages"),
   path.resolve(__dirname, "styles"),
-];
+  path.resolve(__dirname, "layout"),
 
+];
 
 module.exports = {
   ...nextConfig,
   webpack(config, options) {
     const { dev, isServer } = options;
-    
+
     config.module = config.module || {};
     config.module.rules = config.module.rules || [];
     config.module.rules.push({
@@ -61,5 +62,5 @@ module.exports = {
     } else {
       return config;
     }
-  },
+  }
 };
