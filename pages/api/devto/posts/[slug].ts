@@ -1,13 +1,12 @@
-//dev.to/api/articles/nataliedeweerd/the-power-of-webp-2dlc
-
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { method } = req;
+  const { method,  } = req;
+  const { slug } = req.query;
 
   if (method === "GET") {
   
-    const articles = await fetch("https://dev.to/api/articles?username=nataliedeweerd").then((res) => res.json());
+    const articles = await fetch(`https://dev.to/api/articles/${process.env.DEVTO_USER}/${slug}`).then((res) => res.json());
     return res.status(200).json(articles);
   }
 
