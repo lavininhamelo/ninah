@@ -1,32 +1,34 @@
 import React from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { useTheme } from "@/hooks/useTheme";
-import { Avatar } from "@/components/general/Avatar/Avatar";
-import { Navbar } from "../Navbar/Navbar";
+import { Avatar } from "@/components/general";
+import { Navbar } from "@/components/layout";
+import { me } from "data/me";
 
 import { Container, Span, Intro, MyDescription, AboutMeButton, Hello, Me } from "./styles";
-import Link from "next/link";
 
 const Header: React.FC = () => {
   const { isDark } = useTheme();
 
+  const router = useRouter();
+  const isHome = router.pathname === "/";
+
   return (
     <Container isDark={isDark}>
-      <Navbar />
+      {!!isHome && <Navbar />}
       <Intro>
         <Me>
           <Hello>
             Hi, call me <Span>Ninah</Span>
           </Hello>
-          <MyDescription>
-            I&apos;m Software Dev from Brazil, but I’m living on Portugal. I learn, practice and share Web2, Web3
-            content.
-          </MyDescription>
-          <AboutMeButton>
-            <Link href="/about-me">
+          <MyDescription>{me.shortDescription}</MyDescription>
+          <Link href="/about-me">
+            <AboutMeButton>
               <span>See about me</span> <Span>&gt;&gt;</Span>
-            </Link>
-          </AboutMeButton>
+            </AboutMeButton>
+          </Link>
         </Me>
         <Avatar className="hidden md:block" isDark={isDark} />
       </Intro>

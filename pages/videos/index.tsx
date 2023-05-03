@@ -7,6 +7,9 @@ const Videos: React.FC = () => {
   return (
     <BaseLayout>
       <h1>Videos</h1>
+      <p>
+        Nothing here... for now.
+      </p>
     </BaseLayout>
   );
 };

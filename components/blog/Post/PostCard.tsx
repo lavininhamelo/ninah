@@ -1,22 +1,25 @@
 import Image from "next/image";
 import React, { MouseEvent } from "react";
+import { useRouter } from "next/router";
 
 import { ImageWrapper, Title, Date, GradientBar } from "./styles";
-import { useRouter } from "next/router";
-import Card from "@/components/ui/Card/Card";
+import { Card } from "@/components/ui";
 import { Gradient } from "@/components/ui/Colors/Colors";
+import useTheme from "@/hooks/useTheme";
 
 interface PostCardProps extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
-  tags: string[];
   date: string;
-  index: number;
+  image: string;
   gradient: Gradient;
   link: string;
 }
 
-export const PostCard: React.FC<PostCardProps> = ({ title, tags, date, gradient, index, className, link, ...props }) => {
+const PostCard: React.FC<PostCardProps> = ({ title, date, gradient, image, className, link, ...props }) => {
   const router = useRouter();
+
+  const {isDark} = useTheme()
+  const imageUrl = isDark ? "images/default-dark.png" : "images/default.png";
 
   const handleClick = (e: MouseEvent) => {
     e.preventDefault();
@@ -28,7 +31,7 @@ export const PostCard: React.FC<PostCardProps> = ({ title, tags, date, gradient,
       <ImageWrapper>
         <Image
           className="w-full !h-auto"
-          src={`/images/covers/cover${index}.jpeg`}
+          src={imageUrl}
           alt={"Post - " + title}
           width={0}
           height={0}
@@ -40,3 +43,5 @@ export const PostCard: React.FC<PostCardProps> = ({ title, tags, date, gradient,
     </Card>
   );
 };
+
+export default PostCard;

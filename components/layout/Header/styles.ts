@@ -6,14 +6,12 @@ export const Container = styled.header<{ isDark: boolean }>((props) => ({
   backgroundColor: props.isDark ? colofourBackground : colofourBackgroundLight,
 }));
 
+export const Hello = styled.h2(() => tw`text-4xl font-bold`);
 export const Span = styled.span(() => tw`text-primary dark:text-primary font-bold`);
 export const Intro = styled.section(() => tw`text-center md:text-left flex items-center w-full max-w-[1200px] mt-20 px-2 sm:px-4 md:px-8 xl:px-0`);
 export const Me = styled.main(() => tw`flex-1 md:min-w-[320px]`);
-export const Hello = styled.h2(() => tw`text-4xl font-bold`);
-export const MyDescription = styled.h2(() => tw`md:max-w-[500px] text-lg my-6`);
+export const MyDescription = styled.h2(() => tw`md:max-w-[90%] leading-8 my-6`);
 export const AboutMeButton = styled.button(() => tw`text-lg font-bold`);
-
-
 
 // Custom Gradient
 export const colofourBackgroundLight = `

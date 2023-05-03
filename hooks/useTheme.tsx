@@ -64,7 +64,7 @@ const ThemeProvider: React.FC<ProviderProps<string>> = ({ children }) => {
 const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {
-    console.log("useTheme must be used within an ThemeProvider.");
+    console.warn("useTheme must be used within an ThemeProvider.");
   }
   return context;
 };

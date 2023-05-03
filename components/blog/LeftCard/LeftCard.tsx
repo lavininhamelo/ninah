@@ -1,15 +1,15 @@
 import React from "react";
-import { CardContainer } from "./styles";
-import { Icon } from "@/components/ui/Icon/Icon";
 import Link from "next/link";
-import { Gradient } from "@/components/ui/Colors/Colors";
+import { CardContainer } from "./styles";
+import { Icon } from "@/components/ui";
+import { Gradient, Color, BackgroundColor } from "@/components/ui/Colors/Colors";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   page: string;
   icon: string;
   gradient: Gradient;
-  colorLight: string;
+  colorLight: Color;
 }
 
 const LeftCard: React.FC<Props> = ({ title, page, icon, gradient, className, colorLight }) => {
@@ -17,7 +17,7 @@ const LeftCard: React.FC<Props> = ({ title, page, icon, gradient, className, col
     <Link href={"/" + page}>
       <CardContainer className={className} >
         <div className={'card ' + Gradient(gradient)}>
-          <div className={"overlay " + colorLight }></div>
+          <div className={"overlay " + BackgroundColor(colorLight) }></div>
           <Icon type="outlined">{icon}</Icon>
           <p>{title}</p>
         </div>
@@ -26,4 +26,4 @@ const LeftCard: React.FC<Props> = ({ title, page, icon, gradient, className, col
   );
 };
 
-export { LeftCard };
+export default LeftCard;

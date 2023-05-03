@@ -1,7 +1,6 @@
 import React from "react";
 
 import { InputContainer, InputField, Container, InputError } from "./styles";
-
 interface Props extends React.HTMLAttributes<HTMLInputElement> {
   name: string;
   type?: string;

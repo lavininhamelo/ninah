@@ -1,9 +1,9 @@
-import { Newsletter } from "@/components/blog/Newsletter/Newsletter";
-import Footer from "@/components/layout/Footer/Footer";
-import { Navbar } from "@/components/layout/Navbar/Navbar";
 import React from "react";
-import { Container } from "./styles";
 import useTheme from "@/hooks/useTheme";
+
+import { Newsletter } from "@/components/blog";
+import { Navbar, Footer } from "@/components/layout";
+import { Container } from "./styles";
 
 const BaseLayout: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children }) => {
   const { isDark } = useTheme();

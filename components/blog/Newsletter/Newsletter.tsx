@@ -1,9 +1,8 @@
 import React from "react";
 import { Container, Heading, Title } from "./styles";
-import Button from "@/components/ui/Button/Button";
-import Input from "@/components/ui/Input/Input";
+import { Button, Input } from "@/components/ui";
 
-export const Newsletter: React.FC = () => {
+const Newsletter: React.FC = () => {
   return (
     <Container>
       <Heading>Follow the blog </Heading>
@@ -11,7 +10,9 @@ export const Newsletter: React.FC = () => {
       <Input className="w-full bg-red max-w-[400px]" name="newsletter" placeholder="Your e-mail address...">
         <Button className="hidden md:block">Newsletter</Button>
       </Input>
-      <Button className="block md:hidden w-10/12 mt-4">Newsletter</Button>
+      <Button className="w-full bg-red max-w-[400px] block md:hidden mt-4">Newsletter</Button>
     </Container>
   );
 };
+
+export default Newsletter;

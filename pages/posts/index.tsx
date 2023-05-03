@@ -1,98 +1,74 @@
-import Card from "@/components/ui/Card/Card";
-import { Color, Gradient, TextColor, colors, gradients } from "@/components/ui/Colors/Colors";
-import BaseLayout from "layout/BaseLayout";
-import React from "react";
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import tw, { styled } from "twin.macro";
+import React from "react";
+import Link from "next/link";
+import { Tag as TagSchema, Post as PostSchema } from "@prisma/client";
+import { Gradient, gradients } from "@/components/ui/Colors/Colors";
+import BaseLayout from "layout/BaseLayout";
+import { getAllPosts, getPostsByCategory, getPostsByTag } from "services";
+import { useRouter } from "next/router";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Head from "next/head";
 
-type Post = {
+type PostData = {
   title: string;
   slug: string;
   date: string;
   description: string;
-  tags: string[];
+  tags: {
+    id: number;
+    name: string;
+    slug: string;
+  }[];
   category?: string;
 };
 
 type MyPostsList = {
   year: number;
-  posts: Post[];
+  posts: PostData[];
 };
-
-const postsList: MyPostsList[] = [
-  {
-    year: 2022,
-    posts: [
-      {
-        title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam eget tortor vel felis viverra mattis",
-        slug: "post-1",
-        date: "2022-01-01",
-        description: "Post 1 description",
-        tags: ["node", "react", "javascript", "vue"],
-        category: "category1",
-      },
-    ],
-  },
-  {
-    year: 2023,
-    posts: [
-      {
-        title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-        slug: "post-a",
-        date: "2022-01-01",
-        description: "Post A description",
-        tags: ["node", "react", "javascript", "vue"],
-        category: "categoryA",
-      },
-      {
-        title: "Donec suscipit iaculis dui, sed commodo tortor posuere at",
-        slug: "post-b",
-        date: "2022-01-01",
-        description: "Post B description",
-        tags: ["node", "react"],
-        category: "categoryB",
-      },
-      {
-        title: "Integer vitae odio scelerisque, semper diam in",
-        slug: "post-c",
-        date: "2022-01-01",
-        description: "Post C description",
-        tags: ["javascript", "vue"],
-        category: "categoryC",
-      },
-    ],
-  },
-];
 
 const Year = styled.p`
   ${tw`text-4xl font-bold mb-4`}
 `;
-
 const PostContainer = styled.div`
   ${tw`flex mt-4 flex-wrap w-full justify-between`}
 `;
-
 const PostName = styled.h2`
   ${tw`text-xl font-semibold mt-2  w-full md:w-9/12 `}
 `;
-
 const PostDate = styled.p`
-  ${tw`w-2/12 min-w-[100px] text-sm mt-3`}
+  ${tw`min-w-[100px] text-sm mt-3 text-right`}
 `;
-
 const PostTags = styled.div`
   ${tw`flex flex-wrap mt-2 w-full`}
 `;
-
 const Tag = styled.div`
   ${tw`bg-clip-text text-transparent mr-4 font-semibold`}
 `;
 
-const AllPosts: React.FC = () => {
+const TitleContainer = styled.div`
+  ${tw`flex justify-between items-center`}
+`;
+
+const AllPosts: React.FC<{ postsList: MyPostsList[] }> = ({ postsList }) => {
+  const data = useRouter();
+  const hasQuery = data.query.tag || data.query.category;
+  const title = hasQuery ? "Filtered Posts" : "All Posts";
+
   return (
     <BaseLayout>
-      <h1>All Posts</h1>
-        <section className="main mb-20">
-          {postsList.map((list) => (
+      <Head>
+        <title>All Posts - Ninah</title>
+      </Head>
+      <TitleContainer>
+        <h1>{title}</h1>
+        {hasQuery && <Link href={"/posts"}>Clear all filters</Link>}
+      </TitleContainer>
+
+      <section className="main mb-20">
+        {postsList.length > 0 ? (
+          postsList.map((list) => (
             <div key={list.year} className="mb-8">
               <Year>{list.year}</Year>
               {list.posts.map((post) => (
@@ -101,18 +77,74 @@ const AllPosts: React.FC = () => {
                   <PostDate>{post.date}</PostDate>
                   <PostTags>
                     {post.tags.map((tag, index) => (
-                      <Tag key={tag} className={Gradient(gradients[index])}>
-                        #{tag}
-                      </Tag>
+                      <Link key={tag.slug} href={`/posts?tag=${tag.slug}`}>
+                        <Tag className={Gradient(gradients[index])}>#{tag.name}</Tag>
+                      </Link>
                     ))}
                   </PostTags>
                 </PostContainer>
               ))}
             </div>
-          ))}
-        </section>
+          ))
+        ) : (
+          <p>Nothing here...</p>
+        )}
+      </section>
     </BaseLayout>
   );
 };
+
+export async function getServerSideProps(
+  params: GetServerSidePropsContext<{
+    tag?: string;
+    category?: string;
+  }>
+): Promise<GetServerSidePropsResult<{ postsList: MyPostsList[] }>> {
+  let posts: (PostSchema & {
+    tags: TagSchema[];
+  })[];
+
+  if (params.query.tag && typeof params.query.tag === "string") {
+    posts = await getPostsByTag(params.query.tag);
+  } else if (params.query.category && typeof params.query.category === "string") {
+    posts = await getPostsByCategory(params.query.category);
+  } else {
+    posts = await getAllPosts();
+  }
+
+  const postByYear: { [key: number]: PostData[] } = {};
+  posts.forEach((post) => {
+    const year = new Date(post.createdAt).getFullYear();
+
+    if (!postByYear[year]) {
+      postByYear[year] = [];
+    }
+
+    postByYear[year].push({
+      title: post.title,
+      slug: post.slug,
+      date: new Date(post.createdAt).toLocaleDateString(),
+      description: post.description || "",
+      tags: post.tags,
+    });
+  });
+
+  const postsList: MyPostsList[] = [];
+
+  const years = Object.keys(postByYear).sort().reverse();
+  for (const year of years) {
+    postsList.push({
+      year: Number(year),
+      posts: postByYear[Number(year)],
+    });
+  }
+
+  return {
+    props: {
+      ...(await serverSideTranslations(params.locale || "en", ["common"])),
+      postsList,
+    },
+  };
+}
 
 export default AllPosts;

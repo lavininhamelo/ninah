@@ -1,7 +1,6 @@
-import { Newsletter } from "@/components/blog/Newsletter/Newsletter";
-import Footer from "@/components/layout/Footer/Footer";
-import { Header } from "@/components/layout/Header/Header";
 import React from "react";
+import { Newsletter } from "@/components/blog";
+import { Footer, Header } from "@/components/layout";
 
 const HomeLayout: React.FC<React.HTMLAttributes<HTMLElement>> = ({ children }) => {
   return (

@@ -1,8 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Title, List, Item } from "./styles";
-import GradientBorderCard from "@/components/ui/GradientBorderCard/GradientBorderCard";
-
+import { GradientBorderCard } from "@/components/ui";
 interface PopularPost {
   title: string;
   page: string;

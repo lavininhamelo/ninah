@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap');
 
 /* 
    Theme
@@ -74,6 +73,7 @@ p {
   border-weight: none;
   underline: none;
   line-style: none;
+  z-index: 10;
 }
 
 .highlight__panel {
