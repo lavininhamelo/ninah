@@ -1,7 +1,7 @@
 import tw, { styled } from "twin.macro";
 
 const Container = styled.div`
-    ${tw`flex flex-col items-center justify-center h-12 w-full`}
+    ${tw`flex flex-col items-center justify-center w-full`}
 `;
 
 const InputContainer = styled.div`
@@ -13,11 +13,11 @@ const InputContainer = styled.div`
 `;
 
 const InputField = styled.input`
-  ${tw`w-full h-11 rounded-lg font-light text-sm mx-4 outline-none min-w-[200px]`}
+  ${tw`w-full h-11 rounded-lg text-gray-700 text-sm mx-4 outline-none min-w-[200px]`}
 `;
 
 const InputError = styled.div`
-  ${tw`w-full h-full rounded-lg text-xs text-negative font-medium mt-2 ml-1 outline-none min-w-[200px]`}
+  ${tw`w-full rounded-lg text-xs text-negative font-medium mt-2 ml-1 outline-none min-w-[200px]`}
 `;
 
 export { InputContainer, InputField, InputError, Container };
