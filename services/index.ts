@@ -6,8 +6,8 @@ async function getAllPosts() {
       tags: true,
     },
     orderBy: {
-        createdAt: 'desc'
-    }
+      createdAt: "desc",
+    },
   });
   return posts;
 }
@@ -20,6 +20,8 @@ async function getPostBySlug(slug: string) {
 }
 
 async function getPostsByTag(tagSlug: string) {
+  if (!tagSlug) throw new Error("Tag slug is required");
+
   const posts = await prisma.post.findMany({
     where: {
       tags: {
@@ -29,13 +31,15 @@ async function getPostsByTag(tagSlug: string) {
       },
     },
     include: {
-        tags: true,
-    }
+      tags: true,
+    },
   });
   return posts;
 }
 
 async function getPostsByCategory(categorySlug: string) {
+  if (!categorySlug) throw new Error("Category slug is required");
+
   const posts = await prisma.post.findMany({
     where: {
       category: {
@@ -43,8 +47,8 @@ async function getPostsByCategory(categorySlug: string) {
       },
     },
     include: {
-        tags: true,
-    }
+      tags: true,
+    },
   });
   return posts;
 }
@@ -55,12 +59,22 @@ async function getAllTags() {
 }
 
 async function subscribeEmail(email: string) {
-  const subscriber = await prisma.newsletter.create({
-    data: {
-      email,
-    },
-  });
-  return subscriber;
+  if (!email) throw new Error("Email is required");
+
+  try {
+    return await prisma.newsletter.create({
+      data: {
+        email,
+      },
+    });
+  } catch (error) {
+    const err = error as { code: string };
+    if (err.code === "P2002") {
+      return true;
+    }
+
+    throw error;
+  }
 }
 
 export { getAllPosts, getPostBySlug, getPostsByTag, getPostsByCategory, getAllTags, subscribeEmail };
