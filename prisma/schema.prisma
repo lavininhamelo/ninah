@@ -28,9 +28,9 @@ model Post {
   id               Int       @id @default(autoincrement())
   title            String
   slug             String    @unique
-  imageUrl         String?
+  imageUrl         String?   @db.VarChar(255)
   description      String?
-  contentReference String
+  contentReference String    @db.VarChar(255)
   contentOrigin    String
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
@@ -39,6 +39,7 @@ model Post {
   category         Category? @relation(fields: [categoryId], references: [id])
   categoryId       Int?
   language         String    @default("en")
+  @@index([categoryId])
 }
 
 model Newsletter {

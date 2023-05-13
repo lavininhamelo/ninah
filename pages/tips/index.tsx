@@ -16,7 +16,7 @@ const Tips: React.FC = () => {
       </Head>
       <h1>Tips</h1>
       {tips.length ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 md:gap-4 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 md:gap-4 lg:gap-8 mb-8">
           {[0, 1, 2, 3, 4, 5].map((index) => (
             <TipsCard
               key={index}
@@ -28,7 +28,7 @@ const Tips: React.FC = () => {
           ))}
         </div>
       ) : (
-        <div>Nothing here... for now.</div>
+        <div className="mb-8">Nothing here... for now.</div>
       )}
     </BaseLayout>
   );

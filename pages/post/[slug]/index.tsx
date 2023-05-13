@@ -70,7 +70,7 @@ export async function getStaticProps({ params, locale }: GetStaticPropsContext<{
     };
   }
 
-  const ONE_DAY = 60 * 60 * 24;
+  const SEVEN_DAY = 60 * 60 * 24 * 7;
 
   return {
     props: {
@@ -81,7 +81,7 @@ export async function getStaticProps({ params, locale }: GetStaticPropsContext<{
         body: "<p> Sorry! This blog is under contruction... </p>"
       },
     },
-    revalidate: ONE_DAY,
+    revalidate: SEVEN_DAY,
   };
 };
 

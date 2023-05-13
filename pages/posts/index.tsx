@@ -35,10 +35,10 @@ const PostContainer = styled.div`
   ${tw`flex mt-4 flex-wrap w-full justify-between`}
 `;
 const PostName = styled.h2`
-  ${tw`text-xl font-semibold mt-2  w-full md:w-9/12 `}
+  ${tw`text-xl font-semibold mt-2 cursor-pointer w-full md:w-9/12 `}
 `;
 const PostDate = styled.p`
-  ${tw`min-w-[100px] text-sm mt-3 text-right`}
+  ${tw`min-w-[100px] text-sm mt-3 cursor-pointer md:text-right`}
 `;
 const PostTags = styled.div`
   ${tw`flex flex-wrap mt-2 w-full`}
@@ -52,11 +52,19 @@ const TitleContainer = styled.div`
 `;
 
 const AllPosts: React.FC<{ postsList: MyPostsList[] }> = ({ postsList }) => {
-  const data = useRouter();
-  const hasQuery = data.query.tag || data.query.category;
+  const router = useRouter();
+  const hasQuery = router.query.tag || router.query.category;
   const title = hasQuery ? "Filtered Posts" : "All Posts";
 
+  const handleClick = (slug: string) => {
+    router.push(`/post/${slug}`);
+  };
+
+
   return (
+
+   
+
     <BaseLayout>
       <Head>
         <title>All Posts - Ninah</title>
@@ -73,8 +81,8 @@ const AllPosts: React.FC<{ postsList: MyPostsList[] }> = ({ postsList }) => {
               <Year>{list.year}</Year>
               {list.posts.map((post) => (
                 <PostContainer key={post.slug}>
-                  <PostName>{post.title}</PostName>
-                  <PostDate>{post.date}</PostDate>
+                  <PostName onClick={() => handleClick(post.slug)}>{post.title}</PostName>
+                  <PostDate onClick={() => handleClick(post.slug)}>{post.date}</PostDate>
                   <PostTags>
                     {post.tags.map((tag, index) => (
                       <Link key={tag.slug} href={`/posts?tag=${tag.slug}`}>
