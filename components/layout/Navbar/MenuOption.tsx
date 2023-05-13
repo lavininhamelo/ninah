@@ -3,10 +3,10 @@ import tw from "twin.macro";
 import { Icon } from "@/components/ui";
 import useTheme from "@/hooks/useTheme";
 
+const MenuOption = tw.div`items-center gap-4 text-xl md:text-base`;
+const SelectLanguage = tw.select`bg-transparent`;
+
 export const MenuOptions: React.FC<React.HTMLAttributes<HTMLDivElement>> = (props) => {
-    const MenuOption = tw.div`items-center gap-4 text-xl md:text-base`;
-    const SelectLanguage = tw.select`bg-transparent`;
-  
     const router = useRouter();
   
     const { toggleTheme, theme } = useTheme();

@@ -11,8 +11,10 @@ const BaseLayout: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children }
     <div className="w-full flex flex-col items-center h-full">
       <Container isDark={isDark} />
       <Navbar />
-      <div className="w-full max-w-[1200px] z-10 flex-1 px-2 sm:px-4 md:px-8 xl:px-0">{children}</div>
-      <Newsletter />
+      <div className="w-full flex z-10 flex-col  max-w-[1200px] flex-1 px-2 sm:px-4 md:px-8 xl:px-0">
+        {children}
+        <Newsletter />
+      </div>
       <Footer />
     </div>
   );

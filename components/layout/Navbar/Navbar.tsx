@@ -2,10 +2,8 @@ import React from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import { useTheme } from "@/hooks/useTheme";
 import { Icon } from "@/components/ui";
-import { Menu, MenuItem, Nav, Title } from "./styles";
-import tw from "twin.macro";
+import { Menu, MenuItem, Nav, Title, MenuHeader, MenuListMobile, MenuMobile, NavMobile } from "./styles";
 import { MenuOptions } from "./MenuOption";
 
 export const Navbar: React.FC = () => {
@@ -23,10 +21,7 @@ export const Navbar: React.FC = () => {
     { name: "Projects", path: "/projects" },
   ];
 
-  const MenuMobile = tw.div`bg-black bg-opacity-30 fixed top-0 right-0 transition-all duration-300 backdrop-blur-lg ease-in-out !z-50`;
-  const NavMobile = tw.div`flex justify-between items-start p-4 h-full flex-wrap transition-all  duration-300  ease-in-out`;
-  const MenuListMobile = tw.ul`w-full flex md:hidden flex-col h-full uppercase list-none items-center justify-between  max-h-[50%]`;
-  const MenuHeader = tw.div`flex justify-between items-center w-full`;
+
   const menuClassName = (isMenuOpen ? "  h-screen w-screen rounded-none" : "  h-0 w-0 rounded-full");
 
   return (

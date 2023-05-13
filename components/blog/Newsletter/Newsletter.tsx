@@ -22,7 +22,7 @@ const Newsletter: React.FC = () => {
     }
 
     try {
-      const result = await fetch("http://localhost:3000/api/newsletter", {
+      const result = await fetch(`${process.env.APP_URL}/api/newsletter`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
