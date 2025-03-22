@@ -1,6 +1,7 @@
 import React, { ProviderProps } from "react";
 import { useState, useEffect, createContext, useContext } from "react";
 
+const DEFAULT_THEME = "light"
 interface ThemeProps {
   theme?: string;
   toggleTheme: () => void;
@@ -8,30 +9,26 @@ interface ThemeProps {
 }
 
 const ThemeContext = createContext<ThemeProps>({
-  theme: "light",
+  theme: DEFAULT_THEME,
   toggleTheme: () => {},
   isDark: false,
 });
 
 const ThemeProvider: React.FC<ProviderProps<string>> = ({ children }) => {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState(DEFAULT_THEME);
   const isDark = theme === "dark";
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
-    
-    if (storedTheme && storedTheme !== theme) {
+    if (storedTheme) {
       setTheme(storedTheme);
       document.documentElement.classList.add(storedTheme);
-    } else if (
-      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-    ) {
+    } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
       setTheme("dark");
       document.documentElement.classList.add("dark");
     } else {
-      setTheme("light");
+      setTheme(DEFAULT_THEME);
     }
-
   }, []);
 
   const toggleTheme = () => {

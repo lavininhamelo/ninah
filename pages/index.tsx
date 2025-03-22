@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import tw, { styled } from "twin.macro";
 
 import HomeLayout from "layout/HomeLayout";
@@ -7,7 +6,10 @@ import { Tech, AboutMeCard, LeftCard, PopularPosts, PostCard } from "@/component
 import { gradients } from "@/components/ui/Colors/Colors";
 import { techs } from "data/techs";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
-import { getAllPosts } from "services";
+import { Post } from "services/types";
+import service from "services";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { AvailableLocales } from "data/posts";
 
 const Container = styled.div`
   ${tw`w-full h-full`}
@@ -34,15 +36,6 @@ const ContentContainer = styled.div`
   ${tw`flex flex-col md:flex-row flex-wrap`}
 `;
 
-interface Post {
-  title: string;
-  description: string;
-  date: string;
-  slug: string;
-  language: string;
-  image: string;
-}
-
 interface Props {
   postsList: Post[];
 }
@@ -55,7 +48,12 @@ const Home: React.FC<Props> = ({ postsList }) => {
       <Head>
         <link rel="icon" href="/favicon.png" />
         <title>Ninah&apos;s Blog</title>
-        <meta name="description" content="Ninah's Blog" />
+        <meta name="author" content="Lavínia Melo" />
+        <meta name="designer" content="Lavínia Melo" />
+        <meta name="developer" content="Lavínia Melo" />
+        <meta name="description" content="Ninah's Blog - Insights on Software Development, Engineering, and Technology." />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta charSet="UTF-8" />
       </Head>
       <HomeLayout>
         <TechsContainer>
@@ -66,14 +64,31 @@ const Home: React.FC<Props> = ({ postsList }) => {
         <Subtitle>Latest Posts</Subtitle>
         <LatestPostsContainer>
           {posts.slice(0, 3).map((post, index) => (
-            <PostCard key={post.slug} gradient={gradients[index]} {...post} link={post.slug} />
+            <PostCard
+              key={post.slug}
+              gradient={gradients[index]}
+              link={post.slug}
+              title={post.title}
+              image={post.image}
+              date={post.date}
+              subtitle={post.subtitle}
+            />
           ))}
         </LatestPostsContainer>
         <ContentContainer>
           <Subtitle>Posts</Subtitle>
           <PostsContainer>
             {posts.map((post, index) => (
-              <PostCard key={post.slug} className="mb-8" gradient={gradients[index]} {...post} link={post.slug} />
+              <PostCard
+                key={post.slug}
+                className="mb-8"
+                gradient={gradients[index]}
+                link={post.slug}
+                title={post.title}
+                image={post.image}
+                date={post.date}
+                subtitle={post.subtitle}
+              />
             ))}
           </PostsContainer>
           <Main>
@@ -101,19 +116,12 @@ const Home: React.FC<Props> = ({ postsList }) => {
 export async function getServerSideProps({
   locale,
 }: GetServerSidePropsContext): Promise<GetServerSidePropsResult<Props>> {
-  const posts = await getAllPosts();
+  const posts: Post[] = await service.getAllPostsByLocale(locale as AvailableLocales);
 
   return {
     props: {
       ...(await serverSideTranslations(locale || "en", ["common"])),
-      postsList: posts.map((post) => ({
-        title: post.title,
-        description: post.description || "",
-        date: new Date(post.createdAt).toLocaleString(),
-        slug: post.slug,
-        language: post.language,
-        image: post.imageUrl || "",
-      })),
+      postsList: posts,
     },
   };
 }

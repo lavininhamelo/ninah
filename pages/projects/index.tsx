@@ -3,10 +3,11 @@ import { ProjectCard } from "@/components/blog";
 import { gradients } from "@/components/ui/Colors/Colors";
 import { projects } from "data/projects";
 import BaseLayout from "layout/BaseLayout";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticPropsContext } from "next";
 import Head from "next/head";
 import tw, { styled } from "twin.macro";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
 export const Container = styled.div`${tw`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-4 lg:gap-8`}`;
 
 const Project: React.FC = () => {
@@ -32,11 +33,10 @@ const Project: React.FC = () => {
 };
 
 export async function getStaticProps({locale}: GetStaticPropsContext) {
-  const TIME = 60 * 60 * 24 * 7;
+  const TIME = 60 * 60 * 24 * 7 // 1 day
   return {
     props: {
-      ...(await serverSideTranslations(locale || 'en', ["common"])),
-    
+      ...(await serverSideTranslations(locale || 'en', ['common'])),
     },
     revalidate: TIME,
   };

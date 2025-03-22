@@ -15,19 +15,20 @@ const defaultData = [
   "front-end",
   "back-end",
 ];
-
+ 
 async function main() {
-  const categories = defaultData.map((category) => ({ name: category, slug: category }))
-  await prisma.category.createMany({
+ const categories = defaultData.map((category) => ({ name: category, slug: category }))
+  
+ await prisma.category.createMany({
     data: categories
-  });
+  }); 
 
   await prisma.post.create({
     data: {
       title: "Connecting a Metamask Wallet to a React App",
       slug: "connecting-metamask-wallet-react-app",
       imageUrl:
-        "https://res.cloudinary.com/practicaldev/image/fetch/s--NAZNQpKx--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/xgecfhliiu4c85k3kfh7.jpg",
+        "image",
       description: "A practical guide to connecting a Metamask wallet to a React app.",
       contentOrigin: "dev.to",
       contentReference: "none",

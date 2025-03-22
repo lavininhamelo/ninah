@@ -2,24 +2,21 @@ import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import tw, { styled } from "twin.macro";
 import React from "react";
 import Link from "next/link";
-import { Tag as TagSchema, Post as PostSchema } from "@prisma/client";
 import { Gradient, gradients } from "@/components/ui/Colors/Colors";
 import BaseLayout from "layout/BaseLayout";
-import { getAllPosts, getPostsByCategory, getPostsByTag } from "services";
+import service from "services";
 import { useRouter } from "next/router";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
+import { Post } from "services/types";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { AvailableLocales } from "data/posts";
 
 type PostData = {
   title: string;
   slug: string;
   date: string;
   description: string;
-  tags: {
-    id: number;
-    name: string;
-    slug: string;
-  }[];
+  tags: string[];
   category?: string;
 };
 
@@ -51,20 +48,20 @@ const TitleContainer = styled.div`
   ${tw`flex justify-between items-center`}
 `;
 
-const AllPosts: React.FC<{ postsList: MyPostsList[] }> = ({ postsList }) => {
+const AllPosts: React.FC<{ postsList: MyPostsList[], locale: AvailableLocales }> = ({ postsList, locale }) => {
   const router = useRouter();
   const hasQuery = router.query.tag || router.query.category;
   const title = hasQuery ? "Filtered Posts" : "All Posts";
 
   const handleClick = (slug: string) => {
-    router.push(`/post/${slug}`);
+    router.push(
+       `/post/${slug}`,
+      undefined,
+      { locale }
+    );
   };
 
-
   return (
-
-   
-
     <BaseLayout>
       <Head>
         <title>All Posts - Ninah</title>
@@ -85,8 +82,8 @@ const AllPosts: React.FC<{ postsList: MyPostsList[] }> = ({ postsList }) => {
                   <PostDate onClick={() => handleClick(post.slug)}>{post.date}</PostDate>
                   <PostTags>
                     {post.tags.map((tag, index) => (
-                      <Link key={tag.slug} href={`/posts?tag=${tag.slug}`}>
-                        <Tag className={Gradient(gradients[index])}>#{tag.name}</Tag>
+                      <Link key={tag + "_" + index} href={`/posts?tag=${tag}`}>
+                        <Tag className={Gradient(gradients[index])}>#{tag}</Tag>
                       </Link>
                     ))}
                   </PostTags>
@@ -106,23 +103,23 @@ export async function getServerSideProps(
   params: GetServerSidePropsContext<{
     tag?: string;
     category?: string;
+    locale: AvailableLocales
   }>
-): Promise<GetServerSidePropsResult<{ postsList: MyPostsList[] }>> {
-  let posts: (PostSchema & {
-    tags: TagSchema[];
-  })[];
+): Promise<GetServerSidePropsResult<{ postsList: MyPostsList[], locale: AvailableLocales }>> {
+  let posts: Post[];
 
-  if (params.query.tag && typeof params.query.tag === "string") {
-    posts = await getPostsByTag(params.query.tag);
+  /*if (params.query.tag && typeof params.query.tag === "string") {
+    //posts = await service.getPostsByTag(params.query.tag);
   } else if (params.query.category && typeof params.query.category === "string") {
-    posts = await getPostsByCategory(params.query.category);
+    //posts = await service.getPostsByCategory(params.query.category);
   } else {
-    posts = await getAllPosts();
-  }
+  }*/
+  posts = await service.getAllPostsByLocale(params.locale as AvailableLocales);
 
   const postByYear: { [key: number]: PostData[] } = {};
+
   posts.forEach((post) => {
-    const year = new Date(post.createdAt).getFullYear();
+    const year = new Date(post.date).getFullYear();
 
     if (!postByYear[year]) {
       postByYear[year] = [];
@@ -131,9 +128,9 @@ export async function getServerSideProps(
     postByYear[year].push({
       title: post.title,
       slug: post.slug,
-      date: new Date(post.createdAt).toLocaleDateString(),
+      date: new Date(post.date).toLocaleDateString(params.locale),
       description: post.description || "",
-      tags: post.tags,
+      tags: post.tags || [],
     });
   });
 
@@ -150,6 +147,7 @@ export async function getServerSideProps(
   return {
     props: {
       ...(await serverSideTranslations(params.locale || "en", ["common"])),
+      locale: (params.locale || "en") as AvailableLocales,
       postsList,
     },
   };

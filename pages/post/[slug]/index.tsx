@@ -1,28 +1,27 @@
 import React, { useEffect } from "react";
-import { GetStaticPathsResult, GetStaticPropsContext, GetStaticPropsResult } from "next";
+import { GetStaticPaths, GetStaticPropsContext, GetStaticPropsResult } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import prism from "prismjs";
 import tw, { styled } from "twin.macro";
 
 import BaseLayout from "layout/BaseLayout";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { getAllPosts, getPostBySlug } from "services";
+import service from "services";
+import { Post as IPost } from "services/types";
+import { AvailableLocales } from "data/posts";
 interface Props {
   slug: string;
   article: {
     title: string;
-    body: string;    
+    content: string;
   };
 }
 
-const Post: React.FC<Props> = ({ slug, article }) => {
+const Post: React.FC<Props> = ({ article }) => {
   const router = useRouter();
 
   useEffect(() => {
     const load = async () => {
       if (typeof window !== "undefined") {
-        prism.highlightAll();
       }
     };
     load();
@@ -40,29 +39,36 @@ const Post: React.FC<Props> = ({ slug, article }) => {
       </Head>
       <Container>
         <h1>{article.title}</h1>
-        {!!article.body && <PostArea dangerouslySetInnerHTML={{
-          __html: article.body,
-        }} />}
+        {!!article.content && <PostArea dangerouslySetInnerHTML={{ __html: article.content }} />}
       </Container>
     </BaseLayout>
   );
 };
 
-export async function getStaticPaths(): Promise<GetStaticPathsResult> {
-  const posts = await getAllPosts();
+export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
+  const posts = service.getPostsList() || [];
+
+  const paths = posts.flatMap((post: IPost) =>
+    locales?.map((locale: string) => ({
+      params: { slug: post.slug },
+      locale,
+    })) || [{ params: { slug: post.slug } }]
+  );
 
   return {
-    paths: posts.map((post) => ({
-      params: { slug: post.slug },
-    })),
+    paths,
     fallback: false,
   };
 };
 
-export async function getStaticProps({ params, locale }: GetStaticPropsContext<{ slug: string }>): Promise<GetStaticPropsResult<Props>> {
+
+export async function getStaticProps({
+  params,
+  locale,
+}: GetStaticPropsContext<{ slug: string }>): Promise<GetStaticPropsResult<Props>> {
   const { slug } = params!;
 
-  const post = await getPostBySlug(slug);
+  const post = await service.getPostBySlug(slug, locale as AvailableLocales);
 
   if (!post) {
     return {
@@ -70,33 +76,33 @@ export async function getStaticProps({ params, locale }: GetStaticPropsContext<{
     };
   }
 
-  const SEVEN_DAY = 60 * 60 * 24 * 7;
+  const REVALIDATE_TIME = 60 * 60 * 24 * 7; // 7 days
 
   return {
     props: {
-      ...(await serverSideTranslations(locale || 'en', ["common"])),
       slug,
       article: {
         title: post.title,
-        body: "<p> Sorry! This blog is under contruction... </p>"
+        content: post.content || "<p> Sorry! This post is not available... </p>",
       },
     },
-    revalidate: SEVEN_DAY,
+    revalidate: REVALIDATE_TIME,
   };
-};
+}
 
 export default Post;
 
+const Container = styled.div`
+  ${tw`flex flex-col self-center items-center max-w-[1000px] mt-8`}
+`;
 
-const Container = styled.div`flex flex-col items-center py-8 px-32 leading-10 w-full`;
-
-const PostArea = styled.div`
+const PostArea = styled.article`
   & > h1 {
-    ${tw`text-4xl font-bold`}
+    ${tw`text-2xl font-bold`}
   }
 
   & > p {
-    ${tw`text-lg leading-[3rem]`}
+    ${tw`text-base leading-[2rem]`}
 
     & > code:only-child {
       ${tw`bg-gray-100 dark:bg-light1 px-4 py-3 rounded-md`}
@@ -145,24 +151,28 @@ const PostArea = styled.div`
   }
 
   & > h2 {
-    ${tw`text-3xl font-bold mb-4 mt-6`}
-  }
-
-  & > h3 {
-    ${tw`text-2xl font-bold mb-4 mt-6`}
-  }
-
-  & > h4 {
     ${tw`text-xl font-bold mb-4 mt-6`}
   }
 
-  & > h5 {
+  & > h3 {
     ${tw`text-lg font-bold mb-4 mt-6`}
+  }
+
+  & > h4 {
+    ${tw`text-lg font-bold mb-4 mt-6`}
+  }
+
+  & > h5 {
+    ${tw`text-base font-bold mb-4 mt-6`}
   }
 
   & > h6 {
     ${tw`text-base font-bold mb-4 mt-6`}
   }
+
+  & > hr {
+    ${tw`my-10`}
+  }
 `;
 
-export { PostArea, Container }
+export { PostArea };

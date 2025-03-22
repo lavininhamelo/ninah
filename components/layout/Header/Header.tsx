@@ -11,7 +11,6 @@ import { Container, Span, Intro, MyDescription, AboutMeButton, Hello, Me } from 
 
 const Header: React.FC = () => {
   const { isDark } = useTheme();
-
   const router = useRouter();
   const isHome = router.pathname === "/";
 
@@ -30,7 +29,7 @@ const Header: React.FC = () => {
             </AboutMeButton>
           </Link>
         </Me>
-        <Avatar className="hidden md:block" isDark={isDark} />
+        <Avatar className="hidden md:block" />
       </Intro>
     </Container>
   );

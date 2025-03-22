@@ -1,80 +1,114 @@
-import { prisma } from "../prisma/db";
+import devto from "./providers/devto"
+import { AvailableLocales, PostConfig, posts } from "data/posts"
+import { Post } from "./types"
 
-async function getAllPosts() {
-  const posts = await prisma.post.findMany({
-    include: {
-      tags: true,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  return posts;
+type Service = {
+  getPostsList: () => Post[]
+  getAllPostsByLocale: (availableLocales: AvailableLocales) => Promise<Post[]>
+  getPostBySlug: (slug: string, locale?: AvailableLocales) => Promise<Post | null>
+  getPostsByTag?: (tag: string) => Promise<any>
+  getPostsByCategory?: (category: string) => Promise<any>
+  subscribeEmail?: (email: string) => Promise<any>
 }
 
-async function getPostBySlug(slug: string) {
-  const post = await prisma.post.findUnique({
-    where: { slug },
-  });
-  return post;
+const getPostsList = (): Post[] => {
+  return posts.map(post => ({
+    slug: post.slug,
+    tags: post.tags || [],
+    category: post.category,
+    related_pots: post.related_posts || [],
+    title: post.slug,
+    date: ""
+  }))
 }
 
-async function getPostsByTag(tagSlug: string) {
-  if (!tagSlug) throw new Error("Tag slug is required");
+const getAllPostsByLocale = async (availableLocales: AvailableLocales): Promise<Post[]> => {
+  const allPosts: Post[] = []
 
-  const posts = await prisma.post.findMany({
-    where: {
-      tags: {
-        some: {
-          slug: tagSlug,
-        },
-      },
-    },
-    include: {
-      tags: true,
-    },
-  });
-  return posts;
-}
+  for (let post of posts) {
+    const meta = post.meta[availableLocales]
 
-async function getPostsByCategory(categorySlug: string) {
-  if (!categorySlug) throw new Error("Category slug is required");
-
-  const posts = await prisma.post.findMany({
-    where: {
-      category: {
-        slug: categorySlug,
-      },
-    },
-    include: {
-      tags: true,
-    },
-  });
-  return posts;
-}
-
-async function getAllTags() {
-  const tags = await prisma.tag.findMany();
-  return tags;
-}
-
-async function subscribeEmail(email: string) {
-  if (!email) throw new Error("Email is required");
-
-  try {
-    return await prisma.newsletter.create({
-      data: {
-        email,
-      },
-    });
-  } catch (error) {
-    const err = error as { code: string };
-    if (err.code === "P2002") {
-      return true;
+    if (meta.origin === "devto") {
+      const postData = await devto.getPostBySlug(meta.origin_key)
+      allPosts.push({
+        slug: post.slug,
+        title: meta.title || postData?.title,
+        description: meta.description || postData?.description,
+        subtitle: meta?.subtitle || "",
+        related_posts: post.related_posts || [],
+        image: meta.image === false ? undefined : postData?.image,
+        date: post.date || postData?.date,
+        tags: post?.tags || [],
+        category: post?.category,
+        content: postData?.content
+      })
+    } else if (meta.origin === "md") {
+      allPosts.push({
+        slug: post.slug,
+        title: meta.title,
+        description: meta.description,
+        subtitle: meta?.subtitle || "",
+        related_posts: post.related_posts || [],
+        date: post.date || "",
+        tags: post?.tags || [],
+        category: post?.category,
+        content: "#abc"
+      })
     }
 
-    throw error;
+  }
+
+  return allPosts
+}
+
+const getPostBySlug = async (slug: string, locale: AvailableLocales = "en") => {
+
+  let post: PostConfig = posts.filter(post => post.slug === slug)[0]
+
+  if (!post) {
+    return null
+  }
+
+  const meta = post.meta[locale]
+
+  if (meta.origin === "devto") {
+    const postData = await devto.getPostBySlug(meta.origin_key)
+    return {
+      slug: post.slug,
+      title: meta.title || postData?.title,
+      description: meta.description || postData?.description,
+      subtitle: meta?.subtitle || "",
+      related_posts: post.related_posts || [],
+      image: meta.image === false ? undefined : postData?.image,
+      date: post.date || postData?.date,
+      tags: post?.tags || [],
+      category: post?.category,
+      content: postData?.content
+    }
+  } else if (meta.origin === "md") {
+    return {
+      slug: post.slug,
+      title: meta.title,
+      description: meta.description,
+      subtitle: meta?.subtitle || "",
+      related_posts: post.related_posts || [],
+      date: post.date || new Date().toLocaleString(),
+      tags: post?.tags || [],
+      category: post?.category,
+      content: "#abc"
+    }
+  } else {
+    return null
   }
 }
 
-export { getAllPosts, getPostBySlug, getPostsByTag, getPostsByCategory, getAllTags, subscribeEmail };
+
+function service(): Service {
+  return {
+    getAllPostsByLocale,
+    getPostBySlug,
+    getPostsList,
+  }
+}
+
+export default service()

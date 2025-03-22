@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { subscribeEmail } from "services";
+import service from "services";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method } = req;
   if (method === "POST") {
     try {
       const { email } = req.body;
-      const response = await subscribeEmail(email);
+      const response = await service.subscribeEmail(email);
       if (response) {
         return res.status(201).json(response);
       }

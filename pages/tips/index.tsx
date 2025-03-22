@@ -38,7 +38,7 @@ export async function getStaticProps({ locale }: GetStaticPropsContext) {
   const TIME = 60 * 60 * 24;
   return {
     props: {
-      ...(await serverSideTranslations(locale || "en", ["common"])),
+      ...(await serverSideTranslations(locale || 'en', ['common'])),
     },
     revalidate: TIME,
   };

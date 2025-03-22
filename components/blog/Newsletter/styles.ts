@@ -11,7 +11,7 @@ radial-gradient(at 40% 55%, hsla(0,100%,81%,0.05) 0px, transparent 20%),
 radial-gradient(at 60% 55%, hsla(0,100%,81%,0.05) 0px, transparent 20%);`;
 
 const Container = styled.form`
-  ${tw`dark:border-[rgba(255,255,255,.1)] border border-gray-200 flex flex-col items-center justify-center rounded min-h-[300px] max-w-[1200px] md:min-h-[200px] w-full pb-8 mt-8 md:mt-4 lg:mt-2 z-0`}
+  ${tw`dark:border-[rgba(255,255,255,.1)] border border-gray-200 flex flex-col items-center justify-center rounded min-h-[300px] max-w-[1200px] md:min-h-[200px] w-full pb-8 mt-8 z-0`}
   background-color: ${ColofourBackground};
 `;
 
